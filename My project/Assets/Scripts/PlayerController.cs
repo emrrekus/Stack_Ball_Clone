@@ -25,7 +25,7 @@ public class PlayerController : MonoBehaviour
         {
             impact = false;
         }
-        
+
     }
     private void FixedUpdate()
     {
@@ -34,7 +34,7 @@ public class PlayerController : MonoBehaviour
 
             playerRb.velocity = new Vector3(0, -100 * Time.fixedDeltaTime * 7, 0);
         }
-         
+
     }
 
     private void OnCollisionEnter(Collision collision)
@@ -42,9 +42,21 @@ public class PlayerController : MonoBehaviour
         if (!impact)
         {
 
-            playerRb.velocity= new Vector3(0, 50*Time.fixedDeltaTime*5, 0);
+            playerRb.velocity = new Vector3(0, 50 * Time.fixedDeltaTime * 5, 0);
 
-           
+
+        }
+        else
+        {
+            if (collision.gameObject.tag == "enemy")
+            {
+                collision.transform.parent.gameObject.SetActive(false);
+            }
+            else if (collision.gameObject.tag == "plane")
+            {
+                Debug.Log("GameOver");
+            }
+
         }
     }
 
@@ -57,6 +69,7 @@ public class PlayerController : MonoBehaviour
 
 
         }
+        
     }
 
 
