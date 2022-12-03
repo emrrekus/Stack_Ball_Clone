@@ -10,13 +10,16 @@ public class LevelSpawner : MonoBehaviour
     public GameObject winPrefab;
 
     private GameObject temp1Obstacle, temp2Obstacle;
-    private int level = 1, addNumber = 7;
+    private int level = 30, addNumber = 7;
 
     float obstacleNumber;
+
+   
 
     void Start()
     {
         randomObstacleGenerator();
+        float randomNumber = Random.value;
         for (obstacleNumber =0;  obstacleNumber > -level-addNumber;  obstacleNumber-=0.5f)
         {
             if(level <= 20)
@@ -41,10 +44,21 @@ public class LevelSpawner : MonoBehaviour
 
             }
 
-            if(obstacleNumber>= level *0.3f && obstacleNumber <= level* 0.06f)
+            if(Mathf.Abs(obstacleNumber) >= level *0.3f && Mathf.Abs(obstacleNumber) <= level* 0.06f)
             {
                 temp1Obstacle.transform.eulerAngles = new Vector3(0, obstacleNumber * 8, 0);
                 temp1Obstacle.transform.eulerAngles += Vector3.up * 100;
+
+            }
+            else if(Mathf.Abs(obstacleNumber) > level * 0.8f) 
+            {
+                temp1Obstacle.transform.eulerAngles = new Vector3(0, obstacleNumber * 8, 0);
+                if (randomNumber > 0.75)
+                {
+
+                    temp1Obstacle.transform.eulerAngles += Vector3.up * 180;
+                }
+                
 
             }
             temp1Obstacle.transform.position = new Vector3(0, obstacleNumber - 0.01f, 0);

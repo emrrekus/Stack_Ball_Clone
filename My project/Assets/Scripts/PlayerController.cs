@@ -6,6 +6,11 @@ public class PlayerController : MonoBehaviour
 {
     public Rigidbody playerRb;
     bool impact;
+    float currenTime;
+    bool invincible;
+
+    public GameObject fireShield;
+    
 
     void Start()
     {
@@ -25,7 +30,44 @@ public class PlayerController : MonoBehaviour
         {
             impact = false;
         }
+        if (invincible)
+        {
+            currenTime -= Time.deltaTime * 0.35f;
+            if (fireShield.activeInHierarchy)
+            {
+                fireShield.SetActive(false);
+            }
+        }
+        else
+        {
+            if (fireShield.activeInHierarchy)
+            {
+                fireShield.SetActive(true);
+            }
+            if (impact)
+            {
+                currenTime += Time.deltaTime * 0.8f;
+            }
+            else
+            {
+                currenTime -= Time.deltaTime * 0.5f;
+            }
 
+        }
+
+        if (currenTime >= 1)
+        {
+            currenTime = 1;
+            invincible = true;
+            Debug.Log("invicible");
+        }
+        else if (currenTime <= 0)
+        {
+            currenTime = 0;
+            invincible = false;
+            Debug.Log("---");
+            
+        }
     }
     private void FixedUpdate()
     {
@@ -48,14 +90,27 @@ public class PlayerController : MonoBehaviour
         }
         else
         {
-            if (collision.gameObject.tag == "enemy")
+            if (invincible)
             {
-                collision.transform.parent.gameObject.SetActive(false);
+                if (collision.gameObject.tag == "enemy"&& collision.gameObject.tag =="plane")
+                {
+                    collision.transform.parent.gameObject.SetActive(false);
+                }
+                
             }
-            else if (collision.gameObject.tag == "plane")
+            else
             {
-                Debug.Log("GameOver");
+                if (collision.gameObject.tag == "enemy")
+                {
+                    collision.transform.parent.gameObject.SetActive(false);
+                }
+                else if (collision.gameObject.tag == "plane")
+                {
+                    Debug.Log("GameOver");
+                }
+
             }
+           
 
         }
     }
@@ -69,7 +124,7 @@ public class PlayerController : MonoBehaviour
 
 
         }
-        
+
     }
 
 
